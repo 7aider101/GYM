@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة اشتراك الجيم</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e9ecef;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #dee2e6;
+        }
+
+        h1, h2 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .input-section {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            border: 1px solid #ced4da;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #495057;
+            font-size: 1.05em;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="tel"],
+        .form-group input[type="date"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 17px;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group input[type="tel"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 19px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .display-section {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+
+        .filter-section {
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .filter-section label {
+            font-weight: bold;
+            color: #495057;
+            font-size: 1.05em;
+            flex-shrink: 0;
+        }
+
+        .filter-section select,
+        .filter-section input[type="text"] {
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+            flex-grow: 1; /* Allow search input to grow */
+            min-width: 180px; /* Minimum width for search */
+        }
+
+        .filter-section select:focus,
+        .filter-section input[type="text"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        .member-count {
+            width: 100%;
+            text-align: left;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .member-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .member-card {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: right;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .member-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .member-card h3 {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 22px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        .member-card p {
+            margin: 8px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .member-card p strong {
+            color: #343a40;
+        }
+
+        .member-card .actions {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start; /* Align buttons to the right (due to RTL) */
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            line-height: 1;
+            padding: 0; /* Remove default padding for perfect circle */
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+            transform: scale(1.1);
+        }
+
+        .member-card.active-sub {
+            border-right: 6px solid #28a745; /* Green for active */
+            background-color: #f0fff4;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+        }
+
+        .member-card.active-sub h3 {
+            color: #28a745;
+        }
+
+        .member-card.due-soon {
+            border-right: 6px solid #ffc107;
+            background-color: #fffde7;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.15);
+        }
+
+        .member-card.due-soon h3 {
+            color: #ffc107;
+        }
+
+        .member-card.expired {
+            border-right: 6px solid #dc3545;
+            background-color: #fff4f4;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+        }
+
+        .member-card.expired h3 {
+            color: #dc3545;
+        }
+
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .message-box-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .message-box {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            direction: rtl;
+        }
+
+        .message-box-overlay.active .message-box {
+            transform: translateY(0);
+        }
+
+        .message-box h4 {
+            color: #0056b3;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .message-box p {
+            font-size: 17px;
+            color: #495057;
+            margin-bottom: 25px;
+        }
+
+        .message-box .actions button {
+            padding: 10px 20px;
+            margin: 0 5px; /* Adjust margin for buttons */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .message-box .actions .confirm-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .message-box .actions .confirm-btn:hover {
+            background-color: #c82333;
+        }
+
+        .message-box .actions .cancel-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .message-box .actions .cancel-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .message-box .actions .ok-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .message-box .actions .ok-btn:hover {
+            background-color: #0069d9;
+        }
+
+        /* Styles for renewal specific elements */
+        .message-box .renewal-options {
+            margin-bottom: 20px;
+        }
+
+        .message-box .renewal-options label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .message-box .renewal-options select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            direction: rtl;
+        }
+
+        .whatsapp-btn,
+        .renew-btn,
+        .history-btn {
+            background-color: #25D366; /* WhatsApp green */
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #1DA851;
+        }
+
+        .renew-btn {
+            background-color: #007bff; /* Blue for renew */
+        }
+
+        .renew-btn:hover {
+            background-color: #0069d9;
+        }
+
+        .history-btn {
+            background-color: #6c757d; /* Grey for history */
+        }
+
+        .history-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .whatsapp-btn svg,
+        .renew-btn svg,
+        .delete-btn svg,
+        .history-btn svg {
+            fill: white;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Toast Notification */
+        .toast-notification {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1001;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 17px;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .toast-notification.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .subscription-history-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .subscription-history-list li {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            text-align: right;
+            font-size: 15px;
+        }
+
+        .subscription-history-list li:last-child {
+            border-bottom: none;
+        }
+
+        .subscription-history-list li strong {
+            color: #333;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 15px auto;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .input-section, .display-section {
+                padding: 20px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea,
+            button[type="submit"] {
+                font-size: 16px;
+                padding: 12px 10px;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: flex-end; /* Keep right alignment for RTL */
+                gap: 10px;
+            }
+
+            .filter-section select,
+            .filter-section input[type="text"] {
+                width: 100%; /* Full width on smaller screens */
+                min-width: unset;
+            }
+
+            .member-list {
+                grid-template-columns: 1fr;
+            }
+
+            .member-card {
+                padding: 20px;
+            }
+            .delete-btn {
+                top: 10px;
+                left: 10px;
+                width: 25px;
+                height: 25px;
+                font-size: 16px;
+            }
+            .member-card .actions {
+                flex-direction: column; /* Stack buttons vertically */
+                align-items: flex-start; /* Align stacked buttons to the right */
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 8px;
+            }
+            .message-box {
+                padding: 20px;
+            }
+            .message-box h4 {
+                font-size: 20px;
+            }
+            .message-box p {
+                font-size: 15px;
+            }
+            .message-box .actions button {
+                padding: 8px 15px;
+                font-size: 14px;
+                margin: 0 3px;
+            }
+            .toast-notification {
+                font-size: 15px;
+                min-width: 200px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>نظام إدارة اشتراك الجيم</h1>
+
+        <div class="input-section">
+            <h2>إضافة عضو جديد</h2>
+            <form id="member-form">
+                <div class="form-group">
+                    <label for="member-name">اسم الشخص:</label>
+                    <input type="text" id="member-name" placeholder="أدخل اسم العضو" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone-number">رقم الهاتف (اختياري - سيضاف 964 تلقائياً):</label>
+                    <input type="tel" id="phone-number" placeholder="مثال: 7xxxxxxxx أو 07xxxxxxxx">
+                </div>
+                <div class="form-group">
+                    <label for="subscription-type">نوع الاشتراك:</label>
+                    <select id="subscription-type" required>
+                        <option value="">اختر نوع الاشتراك</option>
+                        <option value="daily">يومي</option>
+                        <option value="weekly">أسبوعي</option>
+                        <option value="monthly">شهري</option>
+                        <option value="quarterly">ربع سنوي (3 أشهر)</option>
+                        <option value="semi-annually">نصف سنوي (6 أشهر)</option>
+                        <option value="annually">سنوي (12 شهر)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="start-date">تاريخ بدء الاشتراك:</label>
+                    <input type="date" id="start-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="member-notes">ملاحظات (اختياري):</label>
+                    <textarea id="member-notes" placeholder="ملاحظات حول العضو..."></textarea>
+                </div>
+                <button type="submit">إضافة عضو</button>
+            </form>
+        </div>
+
+        <div class="display-section">
+            <h2>قائمة الأعضاء</h2>
+            <div class="filter-section">
+                <label for="search-text">بحث (الاسم أو الهاتف):</label>
+                <input type="text" id="search-text" placeholder="ابحث بالاسم أو رقم الهاتف...">
+
+                <label for="filter-subscription-type">تصفية حسب النوع:</label>
+                <select id="filter-subscription-type">
+                    <option value="all">كل الأنواع</option>
+                    <option value="daily">يومي</option>
+                    <option value="weekly">أسبوعي</option>
+                    <option value="monthly">شهري</option>
+                    <option value="quarterly">ربع سنوي</option>
+                    <option value="semi-annually">نصف سنوي</option>
+                    <option value="annually">سنوي</option>
+                </select>
+
+                <label for="filter-status">تصفية حسب الحالة:</label>
+                <select id="filter-status">
+                    <option value="all">كل الحالات</option>
+                    <option value="active">نشط</option>
+                    <option value="due-soon">ينتهي قريباً</option>
+                    <option value="expired">منتهى</option>
+                </select>
+
+                <label for="sort-by">ترتيب حسب:</label>
+                <select id="sort-by">
+                    <option value="name-asc">الاسم (أ - ي)</option>
+                    <option value="name-desc">الاسم (ي - أ)</option>
+                    <option value="days-asc">الأيام المتبقية (تصاعدي)</option>
+                    <option value="days-desc">الأيام المتبقية (تنازلي)</option>
+                </select>
+            </div>
+            <p class="member-count" id="member-count">إجمالي الأعضاء: 0 | المعروض: 0</p>
+            <div class="member-list" id="member-list">
+            </div>
+        </div>
+    </div>
+
+    <div class="message-box-overlay" id="message-box-overlay">
+        <div class="message-box">
+            <h4 id="message-box-title"></h4>
+            <p id="message-box-content"></p>
+            <div class="renewal-options" style="display:none;">
+                <label for="renewal-type">نوع التجديد:</label>
+                <select id="renewal-type">
+                    <option value="daily">يومي</option>
+                    <option value="weekly">أسبوعي</option>
+                    <option value="monthly">شهري</option>
+                    <option value="quarterly">ربع سنوي (3 أشهر)</option>
+                    <option value="semi-annually">نصف سنوي (6 أشهر)</option>
+                    <option value="annually">سنوي (12 شهر)</option>
+                </select>
+            </div>
+            <div class="actions" id="message-box-actions">
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-notification" class="toast-notification"></div>
+
+    <script>
+        // --- Utility Functions ---
+        const Storage = {
+            save: (key, data) => {
+                localStorage.setItem(key, JSON.stringify(data));
+            },
+            load: (key) => {
+                return JSON.parse(localStorage.getItem(key)) || [];
+            }
+        };
+
+        const DateUtils = {
+            getDaysInSubscription: (type) => {
+                switch (type) {
+                    case 'daily': return 1;
+                    case 'weekly': return 7;
+                    case 'monthly': return 30; // Approximation for simplicity
+                    case 'quarterly': return 90; // 3 months
+                    case 'semi-annually': return 180; // 6 months
+                    case 'annually': return 365; // 12 months
+                    default: return 0;
+                }
+            },
+            calculateDaysRemaining: (endDate) => {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0); // Normalize to start of day
+                const end = new Date(endDate);
+                end.setHours(0, 0, 0, 0); // Normalize to start of day
+                const diffTime = end.getTime() - today.getTime();
+                // Add 1 day if current day is still included (e.g., if end date is today, 1 day remaining)
+                return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            },
+            addDays: (dateString, days) => {
+                const date = new Date(dateString);
+                date.setDate(date.getDate() + days);
+                return date.toISOString().split('T')[0]; // Return as YYYY-MM-DD string
+            },
+            formatDate: (dateString) => {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return new Date(dateString).toLocaleDateString('ar-EG', options);
+            }
+        };
+
+        const WhatsApp = {
+            generateLink: (phoneNumber, memberName, daysRemaining) => {
+                if (!phoneNumber) return null;
+
+                let cleanPhoneNumber = phoneNumber.replace(/\D/g, '');
+
+                if (cleanPhoneNumber.startsWith('0')) {
+                    cleanPhoneNumber = cleanPhoneNumber.substring(1);
+                }
+
+                // Ensure it starts with 964 if not already
+                if (!cleanPhoneNumber.startsWith('964')) {
+                    cleanPhoneNumber = '964' + cleanPhoneNumber;
+                }
+                
+                let message;
+                if (daysRemaining > 0) {
+                    message = `مرحباً ${memberName}، نود تذكيرك بأن اشتراكك في الجيم سينتهي خلال ${daysRemaining} أيام. يرجى التجديد قريباً لمواصلة الاستفادة من خدماتنا. شكراً لك!`;
+                } else {
+                    message = `مرحباً ${memberName}، نود تذكيرك بأن اشتراكك في الجيم قد انتهى. يرجى التجديد لمواصلة الاستفادة من خدماتنا. شكراً لك!`;
+                }
+                
+                return `https://wa.me/${cleanPhoneNumber}?text=${encodeURIComponent(message)}`;
+            }
+        };
+
+        // UUID Generator (Simple)
+        const UUID = {
+            generate: () => {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+        };
+
+        // --- UI Elements and Interactions ---
+        const UI = {
+            memberForm: document.getElementById('member-form'),
+            memberNameInput: document.getElementById('member-name'),
+            phoneNumberInput: document.getElementById('phone-number'),
+            subscriptionTypeSelect: document.getElementById('subscription-type'),
+            startDateInput: document.getElementById('start-date'),
+            memberNotesInput: document.getElementById('member-notes'), // New notes input
+            memberListDiv: document.getElementById('member-list'),
+            sortBySelect: document.getElementById('sort-by'),
+            searchText: document.getElementById('search-text'), // Combined search
+            filterSubscriptionType: document.getElementById('filter-subscription-type'), // New filter
+            filterStatus: document.getElementById('filter-status'), // New filter
+            memberCountDisplay: document.getElementById('member-count'),
+            messageBoxOverlay: document.getElementById('message-box-overlay'),
+            messageBoxTitle: document.getElementById('message-box-title'),
+            messageBoxContent: document.getElementById('message-box-content'),
+            messageBoxActions: document.getElementById('message-box-actions'),
+            renewalOptionsDiv: document.querySelector('.renewal-options'),
+            renewalTypeSelect: document.getElementById('renewal-type'),
+            toastNotification: document.getElementById('toast-notification'),
+
+            showMessage: (title, message, type = 'alert', onConfirm = null, memberData = null) => {
+                UI.messageBoxTitle.textContent = title;
+                UI.messageBoxContent.textContent = message;
+                UI.messageBoxActions.innerHTML = '';
+                UI.renewalOptionsDiv.style.display = 'none'; // Hide renewal options by default
+
+                // Clear previous history list if any
+                const existingHistoryList = UI.messageBoxContent.querySelector('.subscription-history-list');
+                if (existingHistoryList) {
+                    existingHistoryList.remove();
+                }
+
+                if (type === 'alert') {
+                    const okButton = document.createElement('button');
+                    okButton.textContent = 'موافق';
+                    okButton.className = 'ok-btn';
+                    okButton.onclick = () => {
+                        UI.messageBoxOverlay.classList.remove('active');
+                        if (onConfirm) onConfirm();
+                    };
+                    UI.messageBoxActions.appendChild(okButton);
+                } else if (type === 'confirm') {
+                    const confirmButton = document.createElement('button');
+                    confirmButton.textContent = 'تأكيد الحذف';
+                    confirmButton.className = 'confirm-btn';
+                    confirmButton.onclick = () => {
+                        UI.messageBoxOverlay.classList.remove('active');
+                        if (onConfirm) onConfirm(true);
+                    };
+
+                    const cancelButton = document.createElement('button');
+                    cancelButton.textContent = 'إلغاء';
+                    cancelButton.className = 'cancel-btn';
+                    cancelButton.onclick = () => {
+                        UI.messageBoxOverlay.classList.remove('active');
+                        if (onConfirm) onConfirm(false);
+                    };
+
+                    UI.messageBoxActions.appendChild(confirmButton);
+                    UI.messageBoxActions.appendChild(cancelButton);
+                } else if (type === 'renew' && memberData) {
+                    UI.renewalOptionsDiv.style.display = 'block';
+                    UI.renewalTypeSelect.value = memberData.subscriptionType; // Pre-select current type
+
+                    const renewButton = document.createElement('button');
+                    renewButton.textContent = 'تجديد الاشتراك';
+                    renewButton.className = 'ok-btn';
+                    renewButton.onclick = () => {
+                        const selectedRenewalType = UI.renewalTypeSelect.value;
+                        UI.messageBoxOverlay.classList.remove('active');
+                        if (onConfirm) onConfirm(selectedRenewalType, memberData.id);
+                    };
+
+                    const cancelButton = document.createElement('button');
+                    cancelButton.textContent = 'إلغاء';
+                    cancelButton.className = 'cancel-btn';
+                    cancelButton.onclick = () => {
+                        UI.messageBoxOverlay.classList.remove('active');
+                    };
+
+                    UI.messageBoxActions.appendChild(renewButton);
+                    UI.messageBoxActions.appendChild(cancelButton);
+                } else if (type === 'history' && memberData && memberData.subscriptionHistory) {
+                    const historyList = document.createElement('ul');
+                    historyList.className = 'subscription-history-list';
+                    if (memberData.subscriptionHistory.length === 0) {
+                        historyList.innerHTML = '<li>لا يوجد سجل اشتراكات لهذا العضو.</li>';
+                    } else {
+                        memberData.subscriptionHistory.forEach(entry => {
+                            const listItem = document.createElement('li');
+                            listItem.innerHTML = `
+                                <strong>النوع:</strong> ${UI.translateSubscriptionType(entry.type)}<br>
+                                <strong>البدء:</strong> ${DateUtils.formatDate(entry.startDate)}<br>
+                                <strong>الانتهاء:</strong> ${DateUtils.formatDate(entry.endDate)}
+                            `;
+                            historyList.appendChild(listItem);
+                        });
+                    }
+                    UI.messageBoxContent.appendChild(historyList);
+
+                    const okButton = document.createElement('button');
+                    okButton.textContent = 'موافق';
+                    okButton.className = 'ok-btn';
+                    okButton.onclick = () => {
+                        UI.messageBoxOverlay.classList.remove('active');
+                    };
+                    UI.messageBoxActions.appendChild(okButton);
+                }
+
+                UI.messageBoxOverlay.classList.add('active');
+            },
+
+            showToast: (message) => {
+                UI.toastNotification.textContent = message;
+                UI.toastNotification.classList.add('show');
+                setTimeout(() => {
+                    UI.toastNotification.classList.remove('show');
+                }, 3000); // Hide after 3 seconds
+            },
+
+            renderMembers: (members) => {
+                UI.memberListDiv.innerHTML = '';
+
+                let filteredAndSortedMembers = [...members];
+
+                // Apply search filter (name or phone number)
+                const searchTerm = UI.searchText.value.trim().toLowerCase();
+                if (searchTerm) {
+                    filteredAndSortedMembers = filteredAndSortedMembers.filter(member => 
+                        member.name.toLowerCase().includes(searchTerm) ||
+                        member.phoneNumber.includes(searchTerm) // Simple phone number search
+                    );
+                }
+
+                // Apply subscription type filter
+                const filterSubTypeValue = UI.filterSubscriptionType.value;
+                if (filterSubTypeValue !== 'all') {
+                    filteredAndSortedMembers = filteredAndSortedMembers.filter(member => member.subscriptionType === filterSubTypeValue);
+                }
+
+                // Apply status filter
+                const filterStatusValue = UI.filterStatus.value;
+                if (filterStatusValue !== 'all') {
+                    filteredAndSortedMembers = filteredAndSortedMembers.filter(member => {
+                        const days = DateUtils.calculateDaysRemaining(member.endDate);
+                        if (filterStatusValue === 'active') {
+                            return days > 7; // More than 7 days remaining
+                        } else if (filterStatusValue === 'due-soon') {
+                            return days > 0 && days <= 7;
+                        } else if (filterStatusValue === 'expired') {
+                            return days <= 0;
+                        }
+                        return true; // Should not reach here if all covered
+                    });
+                }
+
+                // Apply sorting
+                const sortValue = UI.sortBySelect.value;
+                if (sortValue === 'name-asc') {
+                    filteredAndSortedMembers.sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+                } else if (sortValue === 'name-desc') {
+                    filteredAndSortedMembers.sort((a, b) => b.name.localeCompare(a.name, 'ar'));
+                } else if (sortValue === 'days-asc') {
+                    filteredAndSortedMembers.sort((a, b) => DateUtils.calculateDaysRemaining(a.endDate) - DateUtils.calculateDaysRemaining(b.endDate));
+                } else if (sortValue === 'days-desc') {
+                    filteredAndSortedMembers.sort((a, b) => DateUtils.calculateDaysRemaining(b.endDate) - DateUtils.calculateDaysRemaining(a.endDate));
+                }
+
+                // Update member counts
+                UI.memberCountDisplay.textContent = `إجمالي الأعضاء: ${members.length} | المعروض: ${filteredAndSortedMembers.length}`;
+
+                if (filteredAndSortedMembers.length === 0) {
+                    UI.memberListDiv.innerHTML = '<p style="text-align: center; color: #6c757d; font-size: 1.1em;">لا يوجد أعضاء لعرضهم أو لا توجد نتائج للبحث/التصفية.</p>';
+                    return;
+                }
+
+                filteredAndSortedMembers.forEach(member => {
+                    const memberCard = document.createElement('div');
+                    const daysRemaining = DateUtils.calculateDaysRemaining(member.endDate);
+
+                    let cardClass = 'member-card';
+                    if (daysRemaining > 0 && daysRemaining <= 7) {
+                        cardClass += ' due-soon';
+                    } else if (daysRemaining <= 0) {
+                        cardClass += ' expired';
+                    } else {
+                        cardClass += ' active-sub'; // For active subscriptions
+                    }
+                    memberCard.className = cardClass;
+                    memberCard.setAttribute('data-id', member.id);
+
+                    const whatsappLink = WhatsApp.generateLink(member.phoneNumber, member.name, daysRemaining);
+                    
+                    let actionButtonsHtml = '';
+
+                    // WhatsApp button only if phone number exists and is due soon or expired
+                    if ((daysRemaining <= 7 || daysRemaining <= 0) && whatsappLink) {
+                        actionButtonsHtml += `
+                            <button class="whatsapp-btn" onclick="window.open('${whatsappLink}', '_blank')">
+                                <svg viewBox="0 0 24 24" height="24" width="24" preserveAspectRatio="xMidYMid meet" version="1.1" x="0px" y="0px" enable-background="new 0 0 24 24" xml:space="preserve"><path d="M12.047,2.064c-5.467,0-9.916,4.448-9.916,9.916c0,1.579,0.377,3.125,1.109,4.526l-1.129,4.137 l4.225-1.09c1.33,0.728,2.83,1.115,4.354,1.115l0,0c5.467,0,9.916-4.448,9.916-9.916S17.514,2.064,12.047,2.064z M17.47,15.753 c-0.126,0.222-0.495,0.447-0.814,0.485c-0.316,0.038-0.695,0.117-1.072-0.124c-0.377-0.24-1.29-0.548-1.748-0.67 C13.78,14.86,13.4,14.937,13,15.545c-0.402,0.61-0.902,1.26-1.353,1.385c-0.45,0.126-0.84,0.057-1.396-0.198 c-0.556-0.254-1.856-0.785-2.668-2.176c-0.811-1.39-0.91-2.73-0.63-3.26c0.28-0.53,0.627-0.814,0.884-1.07 c0.256-0.257,0.544-0.552,0.835-0.552c0.292,0,0.573,0.007,0.789,0.358c0.217,0.35,0.727,1.757,0.793,1.905 c0.065,0.148,0.109,0.316,0.024,0.494c-0.086,0.177-0.569,0.461-0.814,0.697c-0.245,0.237-0.47,0.518-0.22,0.92 C10.605,15.11,11.432,16.464,12.733,17.552c1.302,1.089,2.585,1.446,2.943,1.602c0.357,0.155,0.574,0.133,0.79-0.09 c0.217-0.222,0.627-0.75,0.884-1.127c0.257-0.377,0.513-0.316,0.889-0.115c0.375,0.201,2.338,1.127,2.735,1.325 C17.72,15.22,17.597,15.531,17.47,15.753z"></path></svg>
+                                تنبيه واتساب
+                            </button>
+                        `;
+                    }
+
+                    // Renewal button
+                    actionButtonsHtml += `
+                        <button class="renew-btn" data-id="${member.id}">
+                            <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                            تجديد
+                        </button>
+                    `;
+                    // History button
+                    actionButtonsHtml += `
+                        <button class="history-btn" data-id="${member.id}">
+                            <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.51 0-2.91-.49-4.06-1.3L7.94 18.06C9.34 19.18 11.1 20 13 20c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+                            السجل
+                        </button>
+                    `;
+
+                    memberCard.innerHTML = `
+                        <h3>${member.name} <small>(ID: ${member.id.substring(0, 8)}...)</small></h3>
+                        <p><strong>رقم الهاتف:</strong> ${member.phoneNumber || 'غير متوفر'}</p>
+                        <p><strong>نوع الاشتراك:</strong> ${UI.translateSubscriptionType(member.subscriptionType)}</p>
+                        <p><strong>تاريخ بدء الاشتراك:</strong> ${DateUtils.formatDate(member.startDate)}</p>
+                        <p><strong>تاريخ انتهاء الاشتراك:</strong> ${DateUtils.formatDate(member.endDate)}</p>
+                        <p><strong>الأيام المتبقية:</strong> ${daysRemaining} يوم</p>
+                        ${member.notes ? `<p><strong>ملاحظات:</strong> ${member.notes}</p>` : ''}
+                        <div class="actions">
+                            ${actionButtonsHtml}
+                        </div>
+                        <button class="delete-btn" data-id="${member.id}">
+                            <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5L14 2h-4L8.5 4H5v2h14V4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                        </button>
+                    `;
+                    UI.memberListDiv.appendChild(memberCard);
+                });
+            },
+
+            translateSubscriptionType: (type) => {
+                const translations = {
+                    'daily': 'يومي',
+                    'weekly': 'أسبوعي',
+                    'monthly': 'شهري',
+                    'quarterly': 'ربع سنوي (3 أشهر)',
+                    'semi-annually': 'نصف سنوي (6 أشهر)',
+                    'annually': 'سنوي (12 شهر)'
+                };
+                return translations[type] || type;
+            }
+        };
+
+        // --- Main Application Logic ---
+        const GymManager = {
+            members: [],
+            lastUpdateDate: '',
+
+            init: () => {
+                GymManager.members = Storage.load('gymMembers');
+                GymManager.lastUpdateDate = localStorage.getItem('lastUpdateDate') || '';
+                
+                GymManager.updateAllMembersRemainingDays(); // Ensure end dates are adjusted if logic changed or for consistency
+                UI.renderMembers(GymManager.members);
+                GymManager.addEventListeners();
+
+                // Set default start date to today
+                UI.startDateInput.valueAsDate = new Date();
+            },
+
+            addEventListeners: () => {
+                UI.memberForm.addEventListener('submit', GymManager.handleAddMember);
+                UI.memberListDiv.addEventListener('click', GymManager.handleMemberActions);
+                UI.sortBySelect.addEventListener('change', () => UI.renderMembers(GymManager.members));
+                UI.searchText.addEventListener('input', () => UI.renderMembers(GymManager.members));
+                UI.filterSubscriptionType.addEventListener('change', () => UI.renderMembers(GymManager.members));
+                UI.filterStatus.addEventListener('change', () => UI.renderMembers(GymManager.members));
+            },
+
+            handleAddMember: (e) => {
+                e.preventDefault();
+
+                const name = UI.memberNameInput.value.trim();
+                const phoneNumber = UI.phoneNumberInput.value.trim();
+                const subscriptionType = UI.subscriptionTypeSelect.value;
+                const startDate = UI.startDateInput.value;
+                const notes = UI.memberNotesInput.value.trim();
+
+                if (!name || !subscriptionType || !startDate) {
+                    UI.showMessage('خطأ في الإدخال', 'الرجاء إدخال اسم العضو، نوع الاشتراك، وتاريخ البدء.', 'alert');
+                    return;
+                }
+
+                if (GymManager.members.some(member => member.name === name)) {
+                    UI.showMessage('عضو موجود', 'عضو بهذا الاسم موجود بالفعل. الرجاء اختيار اسم آخر.', 'alert');
+                    return;
+                }
+                
+                const daysInSubscription = DateUtils.getDaysInSubscription(subscriptionType);
+                const endDate = DateUtils.addDays(startDate, daysInSubscription);
+
+                const newMember = {
+                    id: UUID.generate(), // Generate unique ID
+                    name,
+                    phoneNumber,
+                    subscriptionType,
+                    startDate,
+                    endDate,
+                    notes, // Save notes
+                    subscriptionHistory: [{ // Initial entry in history
+                        type: subscriptionType,
+                        startDate: startDate,
+                        endDate: endDate,
+                        renewalDate: new Date().toISOString().split('T')[0] // Today
+                    }]
+                };
+
+                GymManager.members.push(newMember);
+                GymManager.saveMembers();
+                UI.renderMembers(GymManager.members);
+
+                UI.memberForm.reset(); // Clear all form fields
+                UI.startDateInput.valueAsDate = new Date(); // Reset start date to today
+                
+                UI.showToast('تم إضافة العضو بنجاح!');
+            },
+
+            handleMemberActions: (e) => {
+                const memberId = e.target.dataset.id || e.target.closest('button')?.dataset.id;
+                if (!memberId) return; // Exit if no member ID found
+
+                // Handle Delete button click
+                if (e.target.closest('.delete-btn')) {
+                    UI.showMessage(
+                        'تأكيد الحذف',
+                        'هل أنت متأكد أنك تريد حذف هذا العضو؟',
+                        'confirm',
+                        (confirmed) => {
+                            if (confirmed) {
+                                GymManager.members = GymManager.members.filter(member => member.id !== memberId);
+                                GymManager.saveMembers();
+                                UI.renderMembers(GymManager.members);
+                                UI.showToast('تم حذف العضو بنجاح.');
+                            }
+                        }
+                    );
+                }
+
+                // Handle Renew button click
+                if (e.target.closest('.renew-btn')) {
+                    const memberToRenew = GymManager.members.find(m => m.id === memberId);
+                    if (memberToRenew) {
+                        UI.showMessage(
+                            'تجديد الاشتراك',
+                            `تجديد اشتراك العضو: ${memberToRenew.name}`,
+                            'renew',
+                            (selectedRenewalType) => {
+                                GymManager.renewMemberSubscription(memberId, selectedRenewalType);
+                            },
+                            memberToRenew // Pass member data for pre-selection
+                        );
+                    }
+                }
+
+                // Handle History button click
+                if (e.target.closest('.history-btn')) {
+                    const memberToShowHistory = GymManager.members.find(m => m.id === memberId);
+                    if (memberToShowHistory) {
+                        UI.showMessage(
+                            'سجل الاشتراكات',
+                            `سجل اشتراكات العضو: ${memberToShowHistory.name}`,
+                            'history',
+                            null, // No confirm callback needed for history
+                            memberToShowHistory // Pass member data including history
+                        );
+                    }
+                }
+            },
+
+            renewMemberSubscription: (memberId, newSubscriptionType) => {
+                const memberIndex = GymManager.members.findIndex(m => m.id === memberId);
+                if (memberIndex !== -1) {
+                    const member = GymManager.members[memberIndex];
+                    const daysToAdd = DateUtils.getDaysInSubscription(newSubscriptionType);
+                    
+                    let newStartDate;
+                    const currentDaysRemaining = DateUtils.calculateDaysRemaining(member.endDate);
+
+                    // If expired or due soon (e.g., <= 0 days remaining), start renewal from today.
+                    // Otherwise, extend from the current end date.
+                    if (currentDaysRemaining <= 0) {
+                        newStartDate = new Date().toISOString().split('T')[0]; // Today
+                    } else {
+                        // Start from the day after the current end date
+                        const currentEndDateObj = new Date(member.endDate);
+                        currentEndDateObj.setDate(currentEndDateObj.getDate() + 1); // Move to the next day
+                        newStartDate = currentEndDateObj.toISOString().split('T')[0];
+                    }
+
+                    // Update member's current subscription details
+                    member.startDate = newStartDate;
+                    member.endDate = DateUtils.addDays(newStartDate, daysToAdd);
+                    member.subscriptionType = newSubscriptionType; // Update to new type if changed
+                    
+                    // Add to subscription history
+                    member.subscriptionHistory.push({
+                        type: newSubscriptionType,
+                        startDate: newStartDate,
+                        endDate: member.endDate,
+                        renewalDate: new Date().toISOString().split('T')[0] // Date of renewal
+                    });
+
+                    GymManager.saveMembers();
+                    UI.renderMembers(GymManager.members);
+                    UI.showToast(`تم تجديد اشتراك ${member.name} بنجاح.`);
+                }
+            },
+
+            updateAllMembersRemainingDays: () => {
+                // This function is less critical now as daysRemaining is calculated on the fly.
+                // However, it could be used for data migration or future daily tasks.
+                // For this implementation, we mostly rely on startDate and endDate.
+                // If you had old data that only saved 'daysRemaining' and not 'startDate/endDate',
+                // this would be the place to try and infer an endDate from it.
+                // For now, we assume all members have proper startDate/endDate.
+            },
+
+            saveMembers: () => {
+                Storage.save('gymMembers', GymManager.members);
+            }
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', GymManager.init);
+    </script>
+</body>
+</html>
